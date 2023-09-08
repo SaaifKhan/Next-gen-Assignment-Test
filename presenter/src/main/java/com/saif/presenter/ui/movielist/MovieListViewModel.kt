@@ -62,8 +62,7 @@ class MovieListViewModel @Inject constructor(
         fetchSubscriptions()
     }
 
-    override fun isLoading() =
-        isLoading
+    override fun isLoading() = isLoading
 
     override fun hasLoadedAllItems()=
         hasLoadedAllItems
