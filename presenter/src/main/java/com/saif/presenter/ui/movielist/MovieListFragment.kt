@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.paginate.Paginate
@@ -11,6 +12,7 @@ import com.saif.base.AdapterClickListener
 import com.saif.domain.model.home.Movie
 import com.saif.presenter.R
 import com.saif.presenter.databinding.FragmentMovieListBinding
+import com.saif.presenter.ui.detail.MovieDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,7 +63,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
 
                 is MovieListEvents.GetMovieList -> {
                     if (event.list?.isNotEmpty() == true){
-                        adapter.submitListNew(event.list!!)
+                        adapter.appendList(event.list!!)
                     }
                 }
 
@@ -72,7 +74,8 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
     }
 
     override fun onItemClick(item: Movie) {
-        TODO("Not yet implemented")
+        findNavController().navigate(MovieListFragmentDirections.showDetailFragment(item.id ?: 0))
+
     }
 
 

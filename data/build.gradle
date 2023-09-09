@@ -24,7 +24,6 @@ android {
             buildConfigField("String", "VERSION", "\"3\"")
         }
         debug {
-            debuggable true
             buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/\""
             buildConfigField("String", "VERSION", "\"3\"")
         }

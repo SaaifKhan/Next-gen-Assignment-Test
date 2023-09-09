@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+
 }
 
 android {
@@ -47,6 +49,7 @@ dependencies {
     //dagger hilt
     api "com.google.dagger:hilt-android:$hilt_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation project(path: ':data')
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     kapt "com.google.dagger:dagger-android-processor:$hilt_version"
 
