@@ -27,7 +27,6 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/\""
         }
         debug {
-            debuggable true
             buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/\""
         }
     }

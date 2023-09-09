@@ -4,16 +4,16 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MovieDetailsResponse(
-    val backdrop_path: String?="",
-    val genres: List<Genre>?= emptyList(),
-    val id: Int? = -1,
-    val original_language: String? = "",
-    val overview: String? = "",
-    val poster_path: String? = "",
-    val production_companies: List<ProductionCompany>? = emptyList(),
-    val release_date: String? = "",
-    val spoken_languages: List<SpokenLanguage>? = emptyList(),
-    val title: String? = "",
+    var backdrop_path: String?="",
+    var genres: List<Genre>?= emptyList(),
+    var id: Int? = -1,
+    var original_language: String? = "",
+    var overview: String? = "",
+    var poster_path: String? = "",
+    var production_companies: List<ProductionCompany>? = emptyList(),
+    var release_date: String? = "",
+    var spoken_languages: List<SpokenLanguage>? = emptyList(),
+    var title: String? = "",
 ) {
     @JsonClass(generateAdapter = true)
     data class Genre(

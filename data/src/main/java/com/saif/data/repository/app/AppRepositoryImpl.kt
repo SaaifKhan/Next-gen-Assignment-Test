@@ -18,7 +18,6 @@ class AppRepositoryImpl @Inject constructor(
     override suspend fun getMovies(movieRequest: MovieRequest): Flow<PaginationResponse<Movie>?> =
         remoteDataSource.getAllMovies(movieRequest)
 
-    override suspend fun getMovieDetails(movieDetailsRequest: MovieDetailsRequest): Flow<MovieDetailsResponse?> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getMovieDetails(movieDetailsRequest: MovieDetailsRequest): Flow<MovieDetailsResponse?> =
+        remoteDataSource.getMovieDetails(movieDetailsRequest = movieDetailsRequest)
 }
