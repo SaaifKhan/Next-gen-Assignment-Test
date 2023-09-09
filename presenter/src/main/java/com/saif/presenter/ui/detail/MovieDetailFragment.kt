@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.saif.base.extensions.show
 import com.saif.presenter.R
 import com.saif.presenter.databinding.FragmentMovieDetailBinding
 import com.saif.presenter.databinding.FragmentMovieListBinding
@@ -32,8 +33,18 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     }
 
     private fun startObservers() {
+        viewModel.event.observe(viewLifecycleOwner){
+            when(val event = it.getContentIfNotHandled()){
+                is MovieDetailFragmentEvent.Loading -> {
+                    showLoader(event.isLoading)
+                }
+                else -> {}
+            }
+        }
 
     }
+
+    private fun showLoader(isLoading: Boolean) = binding?.progress show isLoading
 
 
 }

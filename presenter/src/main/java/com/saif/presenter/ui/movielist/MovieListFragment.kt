@@ -2,6 +2,7 @@ package com.saif.presenter.ui.movielist
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,6 +32,8 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = MovieListingAdapter(this)
+
+
 
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,8 +82,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
                     adapter.clearList()
                 }
                 is MovieListEvents.Loading -> {
-                    showLoader(event.isLoading)
-                    hideRecyclerView(event.isLoading)
+
                 }
 
                 else -> {}

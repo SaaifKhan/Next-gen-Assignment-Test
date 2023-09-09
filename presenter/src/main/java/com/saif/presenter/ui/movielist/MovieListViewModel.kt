@@ -8,11 +8,16 @@
     import com.paginate.Paginate
     import com.saif.base.Event
     import com.saif.base.extensions.default
+    import com.saif.domain.exception.ConnectivityException
+    import com.saif.domain.exception.ServerException
+    import com.saif.domain.exception.UnProcessableEntityException
+    import com.saif.domain.exception._404Exception
     import com.saif.domain.model.home.MovieRequest
     import com.saif.domain.usecases.GetAllMoviesUC
     import dagger.hilt.android.lifecycle.HiltViewModel
     import kotlinx.coroutines.flow.catch
     import kotlinx.coroutines.launch
+    import org.json.JSONObject
     import javax.inject.Inject
 
     @HiltViewModel
@@ -31,7 +36,17 @@
         val event : LiveData<Event<MovieListEvents>> = _events
 
 
+        //for error handling for now
+        private val _errorMessage = MutableLiveData<String>()
+        val errorMessage: LiveData<String>
+            get() = _errorMessage
 
+
+
+        //
+        fun setError(message: String) {
+            _errorMessage.value = message
+        }
 
         fun fetchSubscriptions() {
             showLoader(true)
@@ -42,6 +57,7 @@
                     hasLoadedAllItems = true
                     noDataVisibility.value = View.GONE
                     showLoader(false)
+                    handleExceptions(exceptions)
                 }.collect {
                     isLoading = false
                     showLoader(false)
@@ -73,4 +89,54 @@
             _events.value = Event(MovieListEvents.Loading(show))
         }
 
+        //handling exceptions for now because i didnt make base viewmodel for now but this should be there
+        fun handleExceptions(exception: Throwable): HashMap<String, String> {
+            val errors: HashMap<String, String> = HashMap()
+            when (exception) {
+                is ConnectivityException, is _404Exception, is ServerException -> {
+                    setError(parseErrors(exception.message ?: ""))
+                    errors.put("error", exception.message ?: "")
+                }
+                is UnProcessableEntityException -> {
+                    errors.putAll(exception.errorMap)
+                    exception.errorMap.forEach {
+                        setError(it.value)
+
+                    }
+                }
+                else -> {
+                    setError(parseErrors(exception.message ?: ""))
+                    errors.put("error", exception.message ?: "")
+                }
+            }
+            return errors
+        }
+
     }
+
+
+    //should be viewmodel base but fr now
+    private fun parseErrors(
+        errorResponse: String
+    ): String {
+        try {
+            var err: JSONObject = JSONObject(errorResponse)
+            if (err.has("message"))
+                return err.get("message").toString()
+
+            if (err.has("error"))
+                return err.get("error").toString()
+
+            if (err.has("msg"))
+                return err.get("msg").toString()
+
+            return "Something went wrong"
+        }
+        catch (e:Exception){
+            return "Something went wrong"
+        }
+    }
+
+
+
+

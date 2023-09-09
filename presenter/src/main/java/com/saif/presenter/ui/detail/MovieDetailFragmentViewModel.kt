@@ -1,16 +1,23 @@
 package com.saif.presenter.ui.detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saif.base.Event
 import com.saif.base.extensions.default
 import com.saif.data.util.Applog
+import com.saif.domain.exception.ConnectivityException
+import com.saif.domain.exception.ServerException
+import com.saif.domain.exception.UnProcessableEntityException
+import com.saif.domain.exception._404Exception
 import com.saif.domain.model.home.MovieDetailsRequest
 import com.saif.domain.model.home.MovieDetailsResponse
 import com.saif.domain.usecases.MovieDetailUC
 import com.saif.presenter.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +26,11 @@ import javax.inject.Inject
 class MovieDetailFragmentViewModel @Inject constructor(
     private val movieDetailUC: MovieDetailUC
 ) : ViewModel() {
+    private val _events = MutableLiveData<Event<MovieDetailFragmentEvent>>()
+    val event : LiveData<Event<MovieDetailFragmentEvent>> = _events
+
+
+
     private val roomId = MutableLiveData<Int>().default(0)
 
     val movieDetailData = MutableLiveData<MovieDetailsResponse>()
@@ -40,16 +52,11 @@ class MovieDetailFragmentViewModel @Inject constructor(
     fun getMovieDetailById() {
         viewModelScope.launch {
             movieDetailUC(request)
-                .onStart {
-                    Applog.d("$request")
-
-                }
-                .catch {
-                    Applog.d("viewmodel","${it.message}")
-                }
+                .onStart {showLoader(true)}
+                .catch {handleExceptions(it)}
+                .onCompletion { showLoader(false) }
                 .collect { res ->
-                    Applog.d("viewmodel","${res}")
-
+                    showLoader(false)
                     // Update the movieDetailData LiveData
                     movieDetailData.value = res
 
@@ -67,11 +74,36 @@ class MovieDetailFragmentViewModel @Inject constructor(
                     languages.value = languagesNames.joinToString(", ")
                     backdropImageUrl.value = "${BuildConfig.IMAGE_URL}${res?.backdrop_path}"
 
-                    Applog.d("viewmodel","${movieDetailData.value}")
-                    Applog.d("viewmodel","${languages.value}")
-                    Applog.d("viewmodel","${productionCompanyNames.value}")
 
                 }
         }
     }
+
+
+    private fun showLoader(show: Boolean){
+        _events.value = Event(MovieDetailFragmentEvent.Loading(show))
+    }
+
+
+    fun handleExceptions(exception: Throwable): HashMap<String, String> {
+        val errors: HashMap<String, String> = HashMap()
+        when (exception) {
+            is ConnectivityException, is _404Exception, is ServerException -> {
+//                showError(parseErrors(exception.message ?: ""))
+                errors.put("error", exception.message ?: "")
+            }
+            is UnProcessableEntityException -> {
+                errors.putAll(exception.errorMap)
+                exception.errorMap.forEach {
+//                    showError(it.value)
+                }
+            }
+            else -> {
+//                showError(parseErrors(exception.message ?: ""))
+                errors.put("error", exception.message ?: "")
+            }
+        }
+        return errors
+    }
+
 }

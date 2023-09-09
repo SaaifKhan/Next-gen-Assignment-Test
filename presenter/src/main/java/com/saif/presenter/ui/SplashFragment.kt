@@ -20,8 +20,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         lifecycleScope.launch {
             delay(3000)
             findNavController().navigate(R.id.show_movie_list_fragment)
