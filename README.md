@@ -8,7 +8,7 @@
 ## Architecture
 
 Popular Movies App is built using modern Android development practices, ensuring a clean and maintainable codebase. Here's an overview of its architecture:
-- **Clean Architecture**: The app follows a clean architecture pattern, separating concerns into layers: Presentation, Domain, and Data.
+- **Clean Architecture**: The app follows a clean architecture pattern, separating concerns into layers using Multi Module: Presentation, Domain,Data,and Base.
 - **MVVM (Model-View-ViewModel)**: Utilizes the MVVM architectural pattern to keep the UI logic separate from the business logic.
 - **Usecase and Repository Pattern**: Employs use cases to handle business logic and repositories to manage data access.
 ## Built With 🛠
@@ -27,6 +27,6 @@ Popular Movies App is built using modern Android development practices, ensuring
 
 To get started with Popular Movies App, follow these steps:
 
-1. Clone this repository: `git clone https://github.com/yourusername/popular-movies-app.git`
+1. Clone this repository: `git clone https://github.com/SaaifKhan/Next-gen-Assignment-Test`
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
