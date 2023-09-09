@@ -6,10 +6,13 @@ import com.saif.base.AdapterClickListener
 import com.saif.base.adapters.BaseAdapter
 import com.saif.domain.model.home.Movie
 import com.saif.presenter.databinding.ItemMovieListBinding
+import kotlin.properties.Delegates
 
 class MovieListingAdapter(
     private val listener:AdapterClickListener<Movie>
 ): BaseAdapter<Movie, MovieListViewHolder>() {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder =
 
         MovieListViewHolder(
@@ -21,6 +24,20 @@ class MovieListingAdapter(
             )
         )
 
-    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) =
-        holder.bind(data[position])
+
+    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
+        val view = data[position]
+        holder.bind(view)
+    }
+
+
+    fun appendList(newList: List<Movie>) {
+        val updatedList = ArrayList(data)
+        updatedList.addAll(newList)
+        data = updatedList
+        notifyDataSetChanged()
+    }
 }
+
+
+

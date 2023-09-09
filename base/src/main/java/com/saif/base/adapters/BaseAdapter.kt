@@ -12,4 +12,10 @@ abstract class BaseAdapter<R, T : RecyclerView.ViewHolder>(protected var data: L
         notifyDataSetChanged()
     }
 
+    fun submitListNew(newData: List<R>) {
+        val oldSize = data.size
+        data = data + newData
+        notifyItemRangeInserted(oldSize, newData.size)
+    }
+
 }

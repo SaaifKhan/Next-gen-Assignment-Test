@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.paginate.Paginate
 import com.saif.base.AdapterClickListener
@@ -18,6 +19,8 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
     private val binding get() = _binding
 
     lateinit var adapter: MovieListingAdapter
+    lateinit var layoutManager: LinearLayoutManager
+
     private val viewModel: MovieListViewModel by viewModels()
 
 
@@ -39,6 +42,8 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
             adapter = MovieListingAdapter(this)
 
             view?.adapter = adapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            view?.layoutManager = layoutManager
             Paginate.with(view, viewModel)
                 .setLoadingTriggerThreshold(2)
                 .addLoadingListItem(true)
@@ -56,7 +61,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list), AdapterClickLi
 
                 is MovieListEvents.GetMovieList -> {
                     if (event.list?.isNotEmpty() == true){
-                        adapter.submitList(event.list!!)
+                        adapter.submitListNew(event.list!!)
                     }
                 }
 
