@@ -30,3 +30,10 @@ To get started with Popular Movies App, follow these steps:
 1. Clone this repository: `git clone https://github.com/SaaifKhan/Next-gen-Assignment-Test`
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
+
+# :camera: Screenshots
+
+|               Light mode                | Dark mode |
+|:---------------------------------------:| :---: |
+| ![Home Light](image/1.jpg "Home Light") |
+| ![Home dark](image/2.jpg "Home Light")  |
