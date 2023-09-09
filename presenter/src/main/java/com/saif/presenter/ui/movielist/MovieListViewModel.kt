@@ -34,17 +34,18 @@
 
 
         fun fetchSubscriptions() {
-    //        showLoader()
+            showLoader(true)
             viewModelScope.launch {
                 isLoading = true
                 getAllMoviesUC(request).catch { exceptions ->
                     isLoading = false
                     hasLoadedAllItems = true
-    //                hideLoader()
-    //                handleExceptions(exceptions)
+                    noDataVisibility.value = View.GONE
+                    showLoader(false)
                 }.collect {
                     isLoading = false
-    //                hideLoader()
+                    showLoader(false)
+
                     hasLoadedAllItems = (it?.page?.toInt() ?: 1) >= (it?.total_pages?.toInt() ?: 1)
                     request.page = (it?.page?.toInt() ?: 1) + 1
 
@@ -53,7 +54,8 @@
                         noDataVisibility.value = View.GONE
                     else
                         noDataVisibility.value = View.VISIBLE
-    //                hideLoader()
+                    showLoader(false)
+
                 }
             }
         }
@@ -65,5 +67,10 @@
         override fun isLoading() = isLoading
 
         override fun hasLoadedAllItems()= hasLoadedAllItems
+
+
+        private fun showLoader(show: Boolean){
+            _events.value = Event(MovieListEvents.Loading(show))
+        }
 
     }

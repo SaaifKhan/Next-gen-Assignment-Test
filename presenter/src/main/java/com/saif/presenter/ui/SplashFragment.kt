@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieAnimationView
 import com.saif.presenter.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -18,9 +19,12 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         lifecycleScope.launch {
             delay(3000)
-            findNavController().navigate(R.id.action_splashFragment_to_movieListFragment)
+            findNavController().navigate(R.id.show_movie_list_fragment)
 
         }
     }
